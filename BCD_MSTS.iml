@@ -16,5 +16,32 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../gson-2.6.2.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="file://$MODULE_DIR$/../commons-codec-1.16.0/commons-codec-1.16.0/apidocs" />
+        </JAVADOC>
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../commons-codec-1.16.0/commons-codec-1.16.0/commons-codec-1.16.0-tests.jar!/" />
+          <root url="jar://$MODULE_DIR$/../commons-codec-1.16.0/commons-codec-1.16.0/commons-codec-1.16.0.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://$MODULE_DIR$/../commons-codec-1.16.0/commons-codec-1.16.0/commons-codec-1.16.0-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../commons-codec-1.16.0/commons-codec-1.16.0/commons-codec-1.16.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../commons-codec-1.16.0/commons-codec-1.16.0/commons-codec-1.16.0-test-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="javatuples" level="project" />
   </component>
 </module>
