@@ -1,6 +1,8 @@
+package msts.obj;
+
 public class User {
     protected int userId;
-    protected String userName;
+    protected String username;
     protected String password;
     protected int role;
     protected String email;
@@ -12,15 +14,16 @@ public class User {
         this.userId = userId;
     }
 
-    public User(String userName, String password, int role, String email, Long contactNumber) {
-        this.userName = userName;
+    public User(String username, String password, int role, String email, Long contactNumber) {
+        this.username = username;
         this.password = password;
+        this.role = role;
         this.email = email;
         this.contactNumber = contactNumber;
     }
 
-    public User(int userId, String userName, String password, int role, String email, Long contactNumber) {
-        this(userName, password, role, email, contactNumber);
+    public User(int userId, String username, String password, int role, String email, Long contactNumber) {
+        this(username, password, role, email, contactNumber);
         this.userId = userId;
     }
 
@@ -29,7 +32,7 @@ public class User {
     }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public String getPassword() {
@@ -52,8 +55,8 @@ public class User {
         this.userId = userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPassword(String password) {

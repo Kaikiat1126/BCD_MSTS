@@ -1,4 +1,6 @@
-import MenuGenerator.MainMenu;
+package msts;
+
+import msts.menu.MainMenu;
 import java.sql.*;
 
 public class Main {

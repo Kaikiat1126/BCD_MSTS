@@ -1,3 +1,5 @@
+package msts;
+
 import java.sql.*;
 
 public class JDBCManager {

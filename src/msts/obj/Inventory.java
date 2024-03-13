@@ -1,3 +1,5 @@
+package msts.obj;
+
 public class Inventory {
     private int userId;
     private int medicineId;

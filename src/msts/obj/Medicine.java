@@ -1,3 +1,5 @@
+package msts.obj;
+
 public class Medicine {
     private int medicineID;
     private String name;
