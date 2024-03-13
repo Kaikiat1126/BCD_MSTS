@@ -43,4 +43,24 @@ public class MenuTool {
         }
     }
 
+    public static String getEmailInput(){
+        while (true) {
+            String input = getStringInput("Enter email: ");
+            if(input.contains("@") && input.contains(".")){
+                return input;
+            }
+            System.out.println("Invalid email, please try again\n");
+        }
+    }
+
+    public static Long getContactNum() {
+        while (true) {
+            String input = getStringInput("Enter contact number: ");
+            try {
+                return Long.parseLong(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input, please try again\n");
+            }
+        }
+    }
 }

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 public class Authentication {
 
     public static ResultSet authenticate(String username, String password) throws SQLException {
+        password = Hasher.md5(password);
         String query = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "';";
         return JDBCManager.executeQuery(query);
     }

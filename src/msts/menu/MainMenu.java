@@ -1,6 +1,7 @@
 package msts.menu;
 
 import msts.Authentication;
+import msts.Registration;
 import msts.StatusContainer;
 
 import java.util.Scanner;
@@ -48,6 +49,10 @@ public class MainMenu {
         System.out.println("--------------------------");
         credentials[0] = MenuTool.getStringInput("Enter username: ");
         credentials[1] = MenuTool.getStringInput("Enter password: ");
+        loginProcess(credentials);
+    }
+
+    private void loginProcess(String[] credentials) {
         StatusContainer.currentUser = Authentication.assignUserLogin(credentials);
         if (StatusContainer.currentUser != null) {
             System.out.println("\nLogin successful");
@@ -68,8 +73,7 @@ public class MainMenu {
                 DistributorMenu.getMenu().generateMenu();
                 break;
             case 3:
-                this.healthcareOrganisationMenu = new HealthcareOrganisationMenu();
-                healthcareOrganisationMenu.generateMenu();
+                HealthcareOrganisationMenu.getMenu().generateMenu();
                 break;
             case 4:
                 PatientMenu.getMenu().generateMenu();
@@ -80,39 +84,31 @@ public class MainMenu {
     }
 
     private void register() {
-        int choice;
-        System.out.println("Register menu");
-        do {
-            System.out.println("1. Manufacturer");
-            System.out.println("2. Distributor");
-            System.out.println("3. Healthcare Organisation");
-            System.out.println("4. Patient");
-            System.out.print("Enter your choice: ");
-            choice = scanner.nextInt();
-
-            switch (choice) {
-                case 1:
-                    this.manufacturerMenu = new ManufacturerMenu();
-                    manufacturerMenu.generateMenu();
-                    break;
-                case 2:
-                    this.distributorMenu = new DistributorMenu();
-                    distributorMenu.generateMenu();
-                    break;
-                case 3:
-                    this.healthcareOrganisationMenu = new HealthcareOrganisationMenu();
-                    healthcareOrganisationMenu.generateMenu();
-                    break;
-                case 4:
-                    this.patientMenu = new PatientMenu();
-                    patientMenu.generateMenu();
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+        System.out.println("\nRegister menu");
+        System.out.println("--------------------------");
+        System.out.println("Select your role");
+        System.out.println("1. Manufacturer");
+        System.out.println("2. Distributor");
+        System.out.println("3. Healthcare Organisation");
+        System.out.println("4. Patient");
+        int role = MenuTool.getMenuOption(4, "Enter your option: ");
+        String username = MenuTool.getStringInput("Enter username: ");
+        String password = MenuTool.getStringInput("Enter password: ");
+        String email = MenuTool.getEmailInput();
+        Long contact = MenuTool.getContactNum();
+        try {
+            int status = Registration.register(username, password, role, email, contact);
+            if (status == 1) {
+                System.out.println("Registration successful");
+                loginProcess(new String[]{username, password});
+            } else {
+                System.out.println("Registration failed");
+                generateMainMenu();
             }
-        } while (choice != 3);
-        // Implement registration functionality here
+        } catch (Exception e) {
+            System.out.println("Registration failed");
+            generateMainMenu();
+        }
     }
-
 
 }
