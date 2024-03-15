@@ -6,7 +6,7 @@ public class HealthcareOrganisation extends User{
         super();
     }
 
-    public HealthcareOrganisation(int userId) {
+    public HealthcareOrganisation(String userId) {
         super(userId);
     }
 
@@ -14,7 +14,7 @@ public class HealthcareOrganisation extends User{
         super(username, password, role, email, contactNumber);
     }
 
-    public HealthcareOrganisation(int userId, String username, String password, int role, String email, Long contactNumber) {
+    public HealthcareOrganisation(String userId, String username, String password, int role, String email, Long contactNumber) {
         super(userId, username, password, role, email, contactNumber);
     }
 }

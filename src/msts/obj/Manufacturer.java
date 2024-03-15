@@ -6,7 +6,7 @@ public class Manufacturer extends User{
         super();
     }
 
-    public Manufacturer(int userId) {
+    public Manufacturer(String userId) {
         super(userId);
     }
 
@@ -14,7 +14,7 @@ public class Manufacturer extends User{
         super(username, password, role, email, contactNumber);
     }
 
-    public Manufacturer(int userId, String username, String password, int role, String email, Long contactNumber) {
+    public Manufacturer(String userId, String username, String password, int role, String email, Long contactNumber) {
         super(userId, username, password, role, email, contactNumber);
     }
 }

@@ -106,7 +106,7 @@ public class MainMenu {
                 generateMainMenu();
             }
         } catch (Exception e) {
-            System.out.println("Registration failed");
+            System.out.println("Registration error: " + e.getMessage());
             generateMainMenu();
         }
     }

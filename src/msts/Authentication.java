@@ -18,7 +18,7 @@ public class Authentication {
             ResultSet rs = authenticate(credentials[0], credentials[1]);
             if (!rs.next()) return null;
 
-            int id = rs.getInt("user_id");
+            String id = rs.getString("user_id");
             String username = rs.getString("username");
             String password = rs.getString("password");
             int role = rs.getInt("role");

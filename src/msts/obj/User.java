@@ -1,7 +1,7 @@
 package msts.obj;
 
 public class User {
-    protected int userId;
+    protected String userId;
     protected String username;
     protected String password;
     protected int role;
@@ -10,7 +10,7 @@ public class User {
 
     public User() {}
 
-    public User(int userId) {
+    public User(String userId) {
         this.userId = userId;
     }
 
@@ -22,12 +22,12 @@ public class User {
         this.contactNumber = contactNumber;
     }
 
-    public User(int userId, String username, String password, int role, String email, Long contactNumber) {
+    public User(String userId, String username, String password, int role, String email, Long contactNumber) {
         this(username, password, role, email, contactNumber);
         this.userId = userId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
@@ -51,7 +51,7 @@ public class User {
         return contactNumber;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

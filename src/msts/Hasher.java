@@ -2,6 +2,7 @@ package msts;
 
 import java.security.MessageDigest;
 import java.util.Base64;
+import java.util.UUID;
 
 public class Hasher {
 
@@ -38,4 +39,6 @@ public class Hasher {
     public static String sha256(String input) {
         return hash(input, "SHA-256");
     }
+
+    public static String generateUUID(String input) { return UUID.nameUUIDFromBytes(input.getBytes()).toString(); }
 }

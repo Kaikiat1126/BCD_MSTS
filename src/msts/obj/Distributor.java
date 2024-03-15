@@ -6,7 +6,7 @@ public class Distributor extends User{
         super();
     }
 
-    public Distributor(int userId) {
+    public Distributor(String userId) {
         super(userId);
     }
 
@@ -14,7 +14,7 @@ public class Distributor extends User{
         super(username, password, role, email, contactNumber);
     }
 
-    public Distributor(int userId, String username, String password, int role, String email, Long contactNumber) {
+    public Distributor(String userId, String username, String password, int role, String email, Long contactNumber) {
         super(userId, username, password, role, email, contactNumber);
     }
 }
