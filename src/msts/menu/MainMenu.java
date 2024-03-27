@@ -9,10 +9,6 @@ import java.util.Scanner;
 public class MainMenu {
     Scanner scanner = new Scanner(System.in);
     static MainMenu mainMenu = null;
-    public ManufacturerMenu manufacturerMenu;
-    public DistributorMenu  distributorMenu;
-    public HealthcareOrganisationMenu healthcareOrganisationMenu;
-    public PatientMenu patientMenu;
 
     private MainMenu() {}
 
