@@ -92,7 +92,6 @@ public class Manufacturer extends User{
                     newMedicine.getType() + "', '" +
                     newMedicine.getManufacturerID() + "', '" +
                     newMedicine.getPrice()+ "');";
-            System.out.println(query);
             JDBCManager.executeUpdate(query);
         } catch (Exception e) {
             throw new RuntimeException(e);
