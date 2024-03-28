@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.LinkedList;
 
 public class BlockChain implements Serializable {
-    private static LinkedList<Block> db;
+    private static LinkedList<Block> chain;
     private static volatile BlockChain _instance;
     public String chainFile;
 
@@ -23,22 +23,23 @@ public class BlockChain implements Serializable {
 
     public BlockChain(String chainFile) {
         this.chainFile = chainFile;
-        db = new LinkedList<>();
+        chain = getBlocks();
+        if (chain == null) chain = new LinkedList<>();
     }
 
     public void genesis() {
         Block genesis = new Block("0");
-        db.add(genesis);
+        chain.add(genesis);
         persist();
     }
 
-    public void nextBlock(Block newBlock){
-        db = get();
-        db.add(newBlock);
+    public void addNewBlock(Block newBlock){
+        chain = getBlocks();
+        chain.add(newBlock);
         persist();
     }
 
-    public LinkedList<Block> get(){
+    public LinkedList<Block> getBlocks(){
         try (FileInputStream fis = new FileInputStream(this.chainFile);
              ObjectInputStream ois  = new ObjectInputStream(fis)){
             return (LinkedList<Block>) ois.readObject();
@@ -51,14 +52,14 @@ public class BlockChain implements Serializable {
     private void persist(){
         try (FileOutputStream fos = new FileOutputStream(this.chainFile);
              ObjectOutputStream oos = new ObjectOutputStream(fos)){
-            oos.writeObject(db);
+            oos.writeObject(chain);
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
     public void distribute(){
-        String chain = new GsonBuilder().setPrettyPrinting().create().toJson(db);
-        System.out.println(chain);
+        String blockchain = new GsonBuilder().setPrettyPrinting().create().toJson(chain);
+        System.out.println(blockchain);
     }
 }
