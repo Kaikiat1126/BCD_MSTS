@@ -19,28 +19,21 @@ public class ManufacturerMenu extends StackholderMenu {
     }
 
     public void generateMenu() {
-        System.out.println("\nManufacturer Menu");
-        System.out.println("1. Create New Medicine Batch");
-        System.out.println("2. Add New Medicine");
-        System.out.println("3. View Medicine Transaction");
-        System.out.println("4. Logout");
-        int option = MenuTool.getMenuOption(4, "Enter your option: ");
-        switch (option) {
-            case 1:
-                createNewMedicineBatch();
-                break;
-            case 2:
-                addNewMedicine();
-                break;
-            case 3:
-                ViewMedicineTransaction();
-                break;
-            case 4:
-                logout();
-                break;
-            default:
-                System.out.println("Invalid choice. Please try again.");
-        }
+        int option;
+        do {
+            System.out.println("\nManufacturer Menu");
+            System.out.println("1. Create New Medicine Batch");
+            System.out.println("2. Add New Medicine");
+            System.out.println("3. View Medicine Transaction");
+            System.out.println("4. Logout");
+            option = MenuTool.getMenuOption(4, "Enter your option: ");
+            switch (option) {
+                case 1 -> createNewMedicineBatch();
+                case 2 -> addNewMedicine();
+                case 3 -> ViewMedicineTransaction();
+                case 4 -> logout();
+            }
+        } while (option != 4);
     }
 
     private void createNewMedicineBatch() {
