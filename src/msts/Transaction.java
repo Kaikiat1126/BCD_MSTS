@@ -143,6 +143,10 @@ public class Transaction {
         return digitalSignature;
     }
 
+    public byte[] getDigitalSignatureBytes() {
+        return digitalSignature.getBytes();
+    }
+
     public void setDigitalSignature(String digitalSignature) {
         this.digitalSignature = digitalSignature;
     }
@@ -178,12 +182,7 @@ public class Transaction {
         if (privateKey == null || digitalSignature != null) {
             return;
         }
-        String data = transactionDate + sender + receiver +
-                medicineId + quantity +
-                batchNumber + subBatchNumber +
-                productionDate + expiryDate + additionalInfo;
-
-        byte[] sign = DigitalSignature.getInstance().getSignature(data, privateKey);
+        byte[] sign = DigitalSignature.getInstance().getSignature(calculateHash(), privateKey);
         digitalSignature = Arrays.toString(sign);
     }
 }

@@ -1,10 +1,13 @@
 package msts;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class  Block {
-    private TransactionCollection transactions;
+public class Block implements Serializable {
+    //    private TransactionCollection transactions;
     private Header header;
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public Block(String previousHash) {
