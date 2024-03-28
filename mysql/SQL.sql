@@ -45,3 +45,5 @@ CREATE TABLE transactions (
     additional_info TEXT,
     digital_signature VARCHAR(255)
 );
+
+INSERT INTO `users` VALUES ('384e7bab-001e-34b5-9058-3cb021d5b80f','Kaikiat',1,'123456789','kaikiat@gmail.com','839uNKwmWwjkTPmU16phlg==');
