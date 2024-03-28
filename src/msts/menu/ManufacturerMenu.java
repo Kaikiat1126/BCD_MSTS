@@ -30,7 +30,7 @@ public class ManufacturerMenu extends StackholderMenu {
                 createNewMedicineBatch();
                 break;
             case 2:
-                // Implement add new medicine functionality here
+                addNewMedicine();
                 break;
             case 3:
                 ViewMedicineTransaction();
@@ -59,5 +59,20 @@ public class ManufacturerMenu extends StackholderMenu {
         String additionalInfo = MenuTool.getStringInput("Enter additional information: ");
 
         manufacturer.createNewBatch(medicineID, quantity, additionalInfo);
+    }
+
+    private void addNewMedicine() {
+        System.out.println("\nAdd New Medicine");
+        System.out.println("--------------------------");
+        System.out.println("Select medicine to create batch for:");
+        Manufacturer manufacturer = (Manufacturer) StatusContainer.currentUser;
+
+        String name = MenuTool.getStringInput("Enter Medicine Name: ");
+        String type = MenuTool.getStringInput("Enter Medicine Type: ");
+        int price = MenuTool.getIntegerInput("Enter Medicine Price: ");
+
+        manufacturer.addNewMedicine(name, type, price);
+
+        System.out.println("\nNew Medicine Added Successful!\n");
     }
 }

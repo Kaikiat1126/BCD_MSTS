@@ -3,7 +3,7 @@ package msts;
 import java.sql.Timestamp;
 
 public class  Block {
-    //    private TransactionCollection transactions;
+    private TransactionCollection transactions;
     private Header header;
     private static final long serialVersionUID = 1L;
 
