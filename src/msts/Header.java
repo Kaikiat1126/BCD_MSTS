@@ -1,5 +1,6 @@
 package msts;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class Header implements Serializable {
@@ -7,6 +8,7 @@ public class Header implements Serializable {
     public String currentHash;
     public String previousHash;
     public long timestamp;
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Override

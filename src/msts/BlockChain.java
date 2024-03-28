@@ -33,6 +33,17 @@ public class BlockChain implements Serializable {
         persist();
     }
 
+    public void addNewBlock(Transaction transaction) {
+        Block newBlock = new Block();
+        newBlock.getHeader().setIndex(chain.size());
+        newBlock.getHeader().previousHash = chain.getLast().getHeader().currentHash;
+        newBlock.setTransactions(chain.getLast().getTransactions());
+        newBlock.getTransactions().add(transaction);
+        newBlock.calculateMerkleRoot();
+        newBlock.calculateCurrentHash();
+        addNewBlock(newBlock);
+    }
+
     public void addNewBlock(Block newBlock){
         chain = getBlocks();
         chain.add(newBlock);

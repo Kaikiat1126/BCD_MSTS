@@ -1,24 +1,26 @@
 package msts;
 
-import msts.obj.User;
-
+import java.io.Serial;
+import java.io.Serializable;
 import java.security.PrivateKey;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 
-public class Transaction {
-    private LocalDate transactionDate;
+public class Transaction implements Serializable {
+    private transient LocalDate transactionDate;
     private String sender;
     private String receiver;
     private int medicineId;
     private int quantity;
     private String batchNumber;
     private String subBatchNumber;
-    private LocalDate productionDate;
-    private LocalDate expiryDate;
+    private transient LocalDate productionDate;
+    private transient LocalDate expiryDate;
     private String additionalInfo;
     private String digitalSignature;
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public Transaction(){};
 

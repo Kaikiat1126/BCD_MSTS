@@ -2,6 +2,7 @@ package msts.obj;
 
 import msts.Hasher;
 import msts.JDBCManager;
+import msts.StatusContainer;
 import msts.Transaction;
 
 import java.sql.ResultSet;
@@ -68,8 +69,10 @@ public class Manufacturer extends User{
                     transaction.getTransactionDate() + "', '" + transaction.getSender() + "', '" + transaction.getReceiver() + "', " +
                     transaction.getMedicineId() + ", " + transaction.getQuantity() + ", '" + transaction.getBatchNumber() + "', '" + transaction.getSubBatchNumber() + "', '" +
                     transaction.getProductionDate() + "', '" + transaction.getExpiryDate() + "', '" + transaction.getAdditionalInfo() + "', '" + transaction.getDigitalSignature() + "');";
-            System.out.println(query);
-//            JDBCManager.executeUpdate(query);
+
+            JDBCManager.executeUpdate(query);
+            StatusContainer.blockChain.addNewBlock(transaction);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
