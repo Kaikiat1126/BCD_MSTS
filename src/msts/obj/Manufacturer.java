@@ -77,4 +77,25 @@ public class Manufacturer extends User{
             throw new RuntimeException(e);
         }
     }
+
+    public void addNewMedicine(String name, String type, double price) {
+        try {
+            Medicine newMedicine = new Medicine();
+            newMedicine.setManufacturerID(StatusContainer.currentUser.getUserId());
+            newMedicine.setName(name);
+            newMedicine.setType(type);
+            newMedicine.setPrice(price);
+
+            String query = "INSERT INTO bcd.medicine" + "(" +
+                    "`name`,`type`,`manufacturer_id`,`price`) VALUES ('"  +
+                    newMedicine.getName() + "', '" +
+                    newMedicine.getType() + "', '" +
+                    newMedicine.getManufacturerID() + "', '" +
+                    newMedicine.getPrice()+ "');";
+            System.out.println(query);
+            JDBCManager.executeUpdate(query);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
