@@ -16,7 +16,7 @@ CREATE TABLE medicine (
     medicine_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
     type VARCHAR(255),
-    manufacturer_id INT,
+    manufacturer_id VARCHAR(255),
     price DECIMAL(10, 2),
     FOREIGN KEY (manufacturer_id) REFERENCES users(user_id)
 );
@@ -24,10 +24,24 @@ CREATE TABLE medicine (
 -- Create Inventory table
 CREATE TABLE inventory (
     inventory_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
+    user_id VARCHAR(255),
     medicine_id INT,
     quantity INT,
-    batch_number INT,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (medicine_id) REFERENCES medicine(medicine_id)
+);
+
+CREATE TABLE transactions (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    transaction_date DATE,
+    sender VARCHAR(255),
+    receiver VARCHAR(255),
+    medicine_id INT,
+    quantity INT,
+    batch_number VARCHAR(255),
+    sub_batch_number VARCHAR(255),
+    production_date DATE,
+    expiry_date DATE,
+    additional_info TEXT,
+    digital_signature VARCHAR(255)
 );

@@ -12,21 +12,23 @@ public class Transaction {
     private String receiver;
     private int medicineId;
     private int quantity;
-    private int batchNumber;
+    private String batchNumber;
+    private String subBatchNumber;
     private LocalDate productionDate;
     private LocalDate expiryDate;
     private String additionalInfo;
-    private byte[] digitalSignature;
+    private String digitalSignature;
 
     public Transaction(){};
 
-    public Transaction(LocalDate transactionDate, String sender, String receiver, int medicineId, int quantity, int batchNumber, LocalDate productionDate, LocalDate expiryDate, String additionalInfo, byte[] digitalSignature) {
+    public Transaction(LocalDate transactionDate, String sender, String receiver, int medicineId, int quantity, String batchNumber, String subBatchNumber, LocalDate productionDate, LocalDate expiryDate, String additionalInfo, String digitalSignature) {
         this.transactionDate = transactionDate;
         this.sender = sender;
         this.receiver = receiver;
         this.medicineId = medicineId;
         this.quantity = quantity;
         this.batchNumber = batchNumber;
+        this.subBatchNumber = subBatchNumber;
         this.productionDate = productionDate;
         this.expiryDate = expiryDate;
         this.additionalInfo = additionalInfo;
@@ -73,12 +75,20 @@ public class Transaction {
         this.quantity = quantity;
     }
 
-    public int getBatchNumber() {
+    public String getBatchNumber() {
         return batchNumber;
     }
 
-    public void setBatchNumber(int batchNumber) {
+    public void setBatchNumber(String batchNumber) {
         this.batchNumber = batchNumber;
+    }
+
+    public String getSubBatchNumber() {
+        return subBatchNumber;
+    }
+
+    public void setSubBatchNumber(String subBatchNumber) {
+        this.subBatchNumber = subBatchNumber;
     }
 
     public LocalDate getProductionDate() {
@@ -105,11 +115,11 @@ public class Transaction {
         this.additionalInfo = additionalInfo;
     }
 
-    public byte[] getDigitalSignature() {
+    public String getDigitalSignature() {
         return digitalSignature;
     }
 
-    public void setDigitalSignature(byte[] digitalSignature) {
+    public void setDigitalSignature(String digitalSignature) {
         this.digitalSignature = digitalSignature;
     }
 
@@ -121,11 +131,12 @@ public class Transaction {
                 ", receiver='" + receiver + '\'' +
                 ", medicineId=" + medicineId +
                 ", quantity=" + quantity +
-                ", batchNumber=" + batchNumber +
+                ", batchNumber='" + batchNumber + '\'' +
+                ", subBatchNumber='" + subBatchNumber + '\'' +
                 ", productionDate=" + productionDate +
                 ", expiryDate=" + expiryDate +
                 ", additionalInfo='" + additionalInfo + '\'' +
-                ", digitalSignature=" + Arrays.toString(digitalSignature) +
+                ", digitalSignature='" + digitalSignature + '\'' +
                 '}';
     }
 }

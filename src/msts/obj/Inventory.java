@@ -4,15 +4,13 @@ public class Inventory {
     private int userId;
     private int medicineId;
     private int quantity;
-    private int batchNumber;
 
     public Inventory() {}
 
-    public Inventory(int userId, int medicineId, int quantity, int batchNumber) {
+    public Inventory(int userId, int medicineId, int quantity) {
         this.userId = userId;
         this.medicineId = medicineId;
         this.quantity = quantity;
-        this.batchNumber = batchNumber;
     }
     public int getUserId() {
         return userId;
@@ -36,13 +34,5 @@ public class Inventory {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public int getBatchNumber() {
-        return batchNumber;
-    }
-
-    public void setBatchNumber(int batchNumber) {
-        this.batchNumber = batchNumber;
     }
 }
