@@ -2,6 +2,7 @@ package msts;
 
 import msts.obj.User;
 
+import java.security.PrivateKey;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
@@ -21,7 +22,30 @@ public class Transaction {
 
     public Transaction(){};
 
-    public Transaction(LocalDate transactionDate, String sender, String receiver, int medicineId, int quantity, String batchNumber, String subBatchNumber, LocalDate productionDate, LocalDate expiryDate, String additionalInfo, String digitalSignature) {
+    //create new batch medicine
+    public Transaction(
+            LocalDate transactionDate, String sender, String receiver,
+            int medicineId, int quantity, String batchNumber, String subBatchNumber,
+            LocalDate productionDate, LocalDate expiryDate, String additionalInfo
+    ) {
+        this.transactionDate = transactionDate;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.medicineId = medicineId;
+        this.quantity = quantity;
+        this.batchNumber = batchNumber;
+        this.subBatchNumber = subBatchNumber;
+        this.productionDate = productionDate;
+        this.expiryDate = expiryDate;
+        this.additionalInfo = additionalInfo;
+    }
+
+    public Transaction(
+            LocalDate transactionDate, String sender, String receiver,
+            int medicineId, int quantity, String batchNumber, String subBatchNumber,
+            LocalDate productionDate, LocalDate expiryDate, String additionalInfo,
+            String digitalSignature
+    ) {
         this.transactionDate = transactionDate;
         this.sender = sender;
         this.receiver = receiver;
@@ -138,5 +162,28 @@ public class Transaction {
                 ", additionalInfo='" + additionalInfo + '\'' +
                 ", digitalSignature='" + digitalSignature + '\'' +
                 '}';
+    }
+
+    public String calculateHash() {
+        return Hasher.sha256Salt(
+                transactionDate + sender +
+                        receiver + medicineId +
+                        quantity + batchNumber +
+                        subBatchNumber + productionDate +
+                        expiryDate + additionalInfo
+        );
+    }
+
+    public void signTransaction(PrivateKey privateKey) {
+        if (privateKey == null || digitalSignature != null) {
+            return;
+        }
+        String data = transactionDate + sender + receiver +
+                medicineId + quantity +
+                batchNumber + subBatchNumber +
+                productionDate + expiryDate + additionalInfo;
+
+        byte[] sign = DigitalSignature.getInstance().getSignature(data, privateKey);
+        digitalSignature = Arrays.toString(sign);
     }
 }

@@ -4,7 +4,7 @@ public class Medicine {
     private int medicineID;
     private String name;
     private String type;
-    private int manufacturerID;
+    private String manufacturerID;
     private double price;
 
     public Medicine() {}
@@ -33,11 +33,11 @@ public class Medicine {
         this.type = type;
     }
 
-    public int getManufacturerID() {
+    public String getManufacturerID() {
         return manufacturerID;
     }
 
-    public void setManufacturerID(int manufacturerID) {
+    public void setManufacturerID(String manufacturerID) {
         this.manufacturerID = manufacturerID;
     }
 

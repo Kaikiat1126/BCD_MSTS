@@ -6,6 +6,7 @@ import java.security.PublicKey;
 
 public class DigitalSignature {
 
+    private static DigitalSignature instance = null;
     private static final String ALG = "SHA256withRSA";
     private Signature sign;
 
@@ -15,6 +16,13 @@ public class DigitalSignature {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static DigitalSignature getInstance() {
+        if (instance == null) {
+            instance = new DigitalSignature();
+        }
+        return instance;
     }
 
     public byte[] getSignature(String text, PrivateKey key) {

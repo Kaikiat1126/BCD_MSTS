@@ -69,5 +69,10 @@ public class Hasher {
         return saltHash(input, salt, "SHA-256");
     }
 
+    public static String sha256Salt(String input) {
+        byte[] salt = Salt.generateSalt();
+        return saltHash(input, salt, "SHA-256");
+    }
+
     public static String generateUUID(String input) { return UUID.nameUUIDFromBytes(input.getBytes()).toString(); }
 }

@@ -1,5 +1,9 @@
 package msts.obj;
 
+import msts.KeyAccess;
+
+import java.security.PrivateKey;
+
 public class User {
     protected String userId;
     protected String username;
@@ -73,5 +77,9 @@ public class User {
 
     public void setContactNumber(Long contactNumber) {
         this.contactNumber = contactNumber;
+    }
+
+    public PrivateKey getPrivateKey() throws Exception {
+        return KeyAccess.getPrivateKey(userId);
     }
 }
