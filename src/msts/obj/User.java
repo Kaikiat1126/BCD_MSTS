@@ -5,7 +5,9 @@ import msts.KeyAccess;
 import msts.Transaction;
 
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class User {
@@ -87,6 +89,10 @@ public class User {
         return KeyAccess.getPrivateKey(userId);
     }
 
+    public PublicKey getPublicKey() throws Exception {
+        return KeyAccess.getPublicKey(userId);
+    }
+
     public ArrayList<Transaction> getTransactions(){
         try {
             String query = "SELECT * FROM transactions WHERE receiver = '" + this.getUserId() + "';";
@@ -136,18 +142,35 @@ public class User {
             ResultSet rs = JDBCManager.executeQuery(query);
 
             if (rs.next()) {
-                return new User(
-                        rs.getString("user_id"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getInt("role"),
-                        rs.getString("email"),
-                        rs.getLong("contact_number")
-                );
+                return extractUserFromResultSet(rs);
             }
             return null;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public User getUserById(String userId){
+        try {
+            String query = "SELECT * FROM users WHERE user_id = '" + userId + "';";
+            ResultSet rs = JDBCManager.executeQuery(query);
+            if (rs.next()) {
+                return extractUserFromResultSet(rs);
+            }
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private User extractUserFromResultSet(ResultSet rs) throws SQLException {
+        return new User(
+                rs.getString("user_id"),
+                rs.getString("username"),
+                rs.getString("password"),
+                rs.getInt("role"),
+                rs.getString("email"),
+                rs.getLong("contact_number")
+        );
     }
 }
