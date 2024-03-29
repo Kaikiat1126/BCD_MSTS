@@ -20,7 +20,6 @@ public class Transaction implements Serializable {
     private transient LocalDate expiryDate;
     private String additionalInfo;
     private String digitalSignature;
-    private String transactionHash;
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -43,7 +42,7 @@ public class Transaction implements Serializable {
         this.productionDate = productionDate;
         this.expiryDate = expiryDate;
         this.additionalInfo = additionalInfo;
-        this.transactionHash = calculateHash();
+        this.transactionId = calculateHash();
     }
 
     public Transaction(
@@ -113,7 +112,7 @@ public class Transaction implements Serializable {
         return digitalSignature.getBytes();
     }
 
-    public String getTransactionHash() { return transactionHash; }
+    public String getTransactionId() { return transactionId; }
 
     @Override
     public String toString() {

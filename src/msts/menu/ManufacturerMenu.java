@@ -37,11 +37,16 @@ public class ManufacturerMenu extends StackholderMenu {
     }
 
     private void createNewMedicineBatch() {
+        Manufacturer manufacturer = (Manufacturer) StatusContainer.currentUser;
+        ArrayList<Medicine> medicines = manufacturer.getAllMedicine();
+        if (medicines.isEmpty()) {
+            System.out.println("\nNo Medicine Available to Create Batch For!");
+            return;
+        }
+
         System.out.println("\nCreate New Medicine Batch");
         System.out.println("--------------------------");
         System.out.println("Select medicine to create batch for:");
-        Manufacturer manufacturer = (Manufacturer) StatusContainer.currentUser;
-        ArrayList<Medicine> medicines = manufacturer.getAllMedicine();
         for (int i = 0; i < medicines.size(); i++) {
             System.out.println((i + 1) + ". " + medicines.get(i).getName());
         }
@@ -57,7 +62,6 @@ public class ManufacturerMenu extends StackholderMenu {
     private void addNewMedicine() {
         System.out.println("\nAdd New Medicine");
         System.out.println("--------------------------");
-        System.out.println("Select medicine to create batch for:");
         Manufacturer manufacturer = (Manufacturer) StatusContainer.currentUser;
 
         String name = MenuTool.getStringInput("Enter Medicine Name: ");
@@ -66,6 +70,6 @@ public class ManufacturerMenu extends StackholderMenu {
 
         manufacturer.addNewMedicine(name, type, price);
 
-        System.out.println("\nNew Medicine Added Successful!\n");
+        System.out.println("\nNew Medicine Added Successful!");
     }
 }

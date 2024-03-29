@@ -70,6 +70,13 @@ public class Manufacturer extends User{
                     transaction.getMedicineId() + ", " + transaction.getQuantity() + ", '" + transaction.getBatchNumber() + "', '" + transaction.getSubBatchNumber() + "', '" +
                     transaction.getProductionDate() + "', '" + transaction.getExpiryDate() + "', '" + transaction.getAdditionalInfo() + "', '" + transaction.getDigitalSignature() + "');";
 
+            String updateInventory = "UPDATE inventory SET quantity = quantity + " + quantity + " WHERE medicine_id = " + medicineID + " AND user_id = '" + getUserId() + "';";
+            String insertInventory = "INSERT INTO inventory (medicine_id, user_id, quantity) VALUES (" + medicineID + ", '" + getUserId() + "', " + quantity + ");";
+            int num = JDBCManager.executeUpdate(updateInventory);
+            if (num == 0) {
+                JDBCManager.executeUpdate(insertInventory);
+            }
+
             JDBCManager.executeUpdate(query);
             StatusContainer.blockChain.addNewBlock(transaction);
 
