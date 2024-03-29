@@ -73,6 +73,8 @@ public class Manufacturer extends User{
             JDBCManager.executeUpdate(query);
             StatusContainer.blockChain.addNewBlock(transaction);
 
+            System.out.println("New Medicine Batch created successfully!");
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

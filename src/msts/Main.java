@@ -14,12 +14,12 @@ public class Main {
         blockChain = BlockChain.getInstance(chainFile);
         if (!chainExists) blockChain.genesis();
         StatusContainer.blockChain = blockChain;
-//        blockChain.distribute();
+        blockChain.distribute();
     }
 
     public static void main(String[] args) throws Exception {
         initializeBlockChain();
-        MainMenu mainMenu = MainMenu.getMenu();
-        mainMenu.generateMainMenu();
+//        MainMenu mainMenu = MainMenu.getMenu();
+//        mainMenu.generateMainMenu();
     }
 }

@@ -3,10 +3,12 @@ package msts;
 import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Block implements Serializable {
     private Header header;
-    private TransactionCollection transactions;
+    private List<Transaction> transactionCollection;
     private String merkleRoot = "0";
     @Serial
     private static final long serialVersionUID = 1L;
@@ -19,7 +21,7 @@ public class Block implements Serializable {
     //for genesis block only
     public Block(String previousHash) {
         header = new Header();
-        transactions = new TransactionCollection();
+        transactionCollection = new ArrayList<>();
         header.setTimestamp(new Timestamp(System.currentTimeMillis()).getTime());
         header.setPreviousHash(previousHash);
         calculateCurrentHash();
@@ -27,28 +29,26 @@ public class Block implements Serializable {
 
     public void calculateCurrentHash() {
         String blockHash = Hasher.sha256Salt(
-                header.index + header.previousHash + header.timestamp + transactions + merkleRoot
+                header.index + header.previousHash + header.timestamp + transactionCollection + merkleRoot
         );
         header.setCurrentHash(blockHash);
     }
 
     public void calculateMerkleRoot() {
-        this.merkleRoot = transactions.calculateMerkleRoot();
+        MerkleTree merkleTree = MerkleTree.getInstance(transactionCollection);
+        merkleTree.build();
+        this.merkleRoot = merkleTree.getRoot();
     }
 
-    public TransactionCollection getTransactions() {
-        return transactions;
+    public List<Transaction> getTransactionCollection() { return transactionCollection; }
+
+    public void setTransactionCollection(List<Transaction> transactionCollection) {
+        this.transactionCollection = transactionCollection;
     }
 
-    public void setTransactions(TransactionCollection transactions) {
-        this.transactions = transactions;
-    }
+    public void add(Transaction transaction){ transactionCollection.add(transaction); }
 
     public Header getHeader() {
         return header;
-    }
-
-    public void setHeader(Header header) {
-        this.header = header;
     }
 }

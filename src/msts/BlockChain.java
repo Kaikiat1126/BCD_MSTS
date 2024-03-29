@@ -37,8 +37,8 @@ public class BlockChain implements Serializable {
         Block newBlock = new Block();
         newBlock.getHeader().setIndex(chain.size());
         newBlock.getHeader().previousHash = chain.getLast().getHeader().currentHash;
-        newBlock.setTransactions(chain.getLast().getTransactions());
-        newBlock.getTransactions().add(transaction);
+        newBlock.setTransactionCollection(chain.getLast().getTransactionCollection());
+        newBlock.add(transaction);
         newBlock.calculateMerkleRoot();
         newBlock.calculateCurrentHash();
         addNewBlock(newBlock);

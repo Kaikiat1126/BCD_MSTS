@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 public class Transaction implements Serializable {
+
+    private String transactionId;
     private transient LocalDate transactionDate;
     private String sender;
     private String receiver;
@@ -18,6 +20,7 @@ public class Transaction implements Serializable {
     private transient LocalDate expiryDate;
     private String additionalInfo;
     private String digitalSignature;
+    private String transactionHash;
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -40,6 +43,7 @@ public class Transaction implements Serializable {
         this.productionDate = productionDate;
         this.expiryDate = expiryDate;
         this.additionalInfo = additionalInfo;
+        this.transactionHash = calculateHash();
     }
 
     public Transaction(
@@ -65,80 +69,40 @@ public class Transaction implements Serializable {
         return transactionDate;
     }
 
-    public void setTransactionDate(LocalDate transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
     public String getSender() {
         return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
     }
 
     public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
     public int getMedicineId() {
         return medicineId;
-    }
-
-    public void setMedicineId(int medicineId) {
-        this.medicineId = medicineId;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public String getBatchNumber() {
         return batchNumber;
-    }
-
-    public void setBatchNumber(String batchNumber) {
-        this.batchNumber = batchNumber;
     }
 
     public String getSubBatchNumber() {
         return subBatchNumber;
     }
 
-    public void setSubBatchNumber(String subBatchNumber) {
-        this.subBatchNumber = subBatchNumber;
-    }
-
     public LocalDate getProductionDate() {
         return productionDate;
-    }
-
-    public void setProductionDate(LocalDate productionDate) {
-        this.productionDate = productionDate;
     }
 
     public LocalDate getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(LocalDate expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
     public String getAdditionalInfo() {
         return additionalInfo;
-    }
-
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
     }
 
     public String getDigitalSignature() {
@@ -149,9 +113,7 @@ public class Transaction implements Serializable {
         return digitalSignature.getBytes();
     }
 
-    public void setDigitalSignature(String digitalSignature) {
-        this.digitalSignature = digitalSignature;
-    }
+    public String getTransactionHash() { return transactionHash; }
 
     @Override
     public String toString() {
