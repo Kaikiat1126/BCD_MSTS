@@ -19,28 +19,17 @@ public class DistributorMenu extends StackholderMenu {
             System.out.println("2. View Medicine Transaction");
             System.out.println("3. Logout");
             option = MenuTool.getMenuOption(3, "Enter your option: ");
-            //change to this if have all cases
-//            switch (option) {
-//                case 1 -> ;
-//                case 2 -> ViewMedicineTransaction();
-//                case 3 -> logout();
-//            }
             switch (option) {
-                case 1:
-                    // Implement order medicine functionality here
-                    break;
-                case 2:
-                    ViewMedicineTransaction();
-                    break;
-                case 3:
-                    logout();
-                    break;
+                case 1 -> orderMedicine();
+                case 2 -> ViewMedicineTransaction();
+                case 3 -> logout();
             }
         } while (option != 3);
     }
 
-    public void buyMedicine(){
-
+    public void orderMedicine(){
+        System.out.println("\nOrder Medicine From Manufacturer");
+        System.out.println("-------------------------------");
     }
 
 }

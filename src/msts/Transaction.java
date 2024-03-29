@@ -26,7 +26,7 @@ public class Transaction implements Serializable {
 
     public Transaction(){};
 
-    //create new batch medicine
+    //create new batch medicine, new transaction request
     public Transaction(
             LocalDate transactionDate, String sender, String receiver,
             int medicineId, int quantity, String batchNumber, String subBatchNumber,

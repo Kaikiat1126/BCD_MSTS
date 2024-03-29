@@ -69,14 +69,9 @@ public class Manufacturer extends User{
                     transaction.getTransactionDate() + "', '" + transaction.getSender() + "', '" + transaction.getReceiver() + "', " +
                     transaction.getMedicineId() + ", " + transaction.getQuantity() + ", '" + transaction.getBatchNumber() + "', '" + transaction.getSubBatchNumber() + "', '" +
                     transaction.getProductionDate() + "', '" + transaction.getExpiryDate() + "', '" + transaction.getAdditionalInfo() + "', '" + transaction.getDigitalSignature() + "');";
+            String insertInventory = "INSERT INTO inventory (medicine_id, user_id, quantity, batch_number) VALUES (" + medicineID + ", '" + getUserId() + "', " + quantity + ", '" + batch + "');";
 
-            String updateInventory = "UPDATE inventory SET quantity = quantity + " + quantity + " WHERE medicine_id = " + medicineID + " AND user_id = '" + getUserId() + "';";
-            String insertInventory = "INSERT INTO inventory (medicine_id, user_id, quantity) VALUES (" + medicineID + ", '" + getUserId() + "', " + quantity + ");";
-            int num = JDBCManager.executeUpdate(updateInventory);
-            if (num == 0) {
-                JDBCManager.executeUpdate(insertInventory);
-            }
-
+            JDBCManager.executeUpdate(insertInventory);
             JDBCManager.executeUpdate(query);
             StatusContainer.blockChain.addNewBlock(transaction);
 
