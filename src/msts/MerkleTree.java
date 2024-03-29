@@ -1,5 +1,7 @@
 package msts;
 
+import org.javatuples.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,34 +57,31 @@ public class MerkleTree {
         return hashLst;
     }
 
-    //generate merkle proof
-    public List<String> generateProof(String transaction) {
-        List<String> proof = new ArrayList<>();
+    //generate merkle proof, check if the transaction is in the block
+    public Pair<Boolean, List<String>> generateProof(String txid) {
         List<String> tempLst = new ArrayList<>();
-        for (Transaction t : this.transactionList) {
-            tempLst.add(t.toString());
+        for (Transaction transaction : this.transactionList) {
+            tempLst.add(transaction.toString());
         }
 
         List<String> hashes = genTransactionHashLst(tempLst);
-        while( hashes.size() != 1 ) {
+        List<String> proof = new ArrayList<>();
+
+        while (hashes.size() != 1) {
+            if (hashes.contains(txid)) {
+                proof.add(txid);
+            }
+
+            // Generate new level of hashes
             hashes = genTransactionHashLst(hashes);
-            if( hashes.size() == 1 ) {
-                break;
-            }
-            if( hashes.size() % 2 != 0 ) {
-                hashes.add(hashes.get(hashes.size()-1));
-            }
-            List<String> temp = new ArrayList<>();
-            for( int i = 0; i < hashes.size(); i+=2 ) {
-                if( hashes.get(i).equals(transaction) ) {
-                    proof.add(hashes.get(i+1));
-                } else if( hashes.get(i+1).equals(transaction) ) {
-                    proof.add(hashes.get(i));
-                }
-                temp.add(Hasher.sha256(hashes.get(i).concat(hashes.get(i+1))));
-            }
-            hashes = temp;
         }
-        return proof;
+
+        // Final check for the last hash
+        if (hashes.size() == 1 && txid.equals(hashes.get(0))) {
+            proof.add(hashes.get(0));
+            return new Pair<>(true, proof);
+        }
+
+        return new Pair<>(false, proof);
     }
 }

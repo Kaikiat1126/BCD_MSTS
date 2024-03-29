@@ -1,8 +1,14 @@
 package msts.obj;
 
+import msts.JDBCManager;
 import msts.KeyAccess;
+import msts.Transaction;
 
 import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class User {
     protected String userId;
@@ -81,5 +87,90 @@ public class User {
 
     public PrivateKey getPrivateKey() throws Exception {
         return KeyAccess.getPrivateKey(userId);
+    }
+
+    public PublicKey getPublicKey() throws Exception {
+        return KeyAccess.getPublicKey(userId);
+    }
+
+    public ArrayList<Transaction> getTransactions(){
+        try {
+            String query = "SELECT * FROM transactions WHERE receiver = '" + this.getUserId() + "';";
+            ResultSet rs = JDBCManager.executeQuery(query);
+            ArrayList<Transaction> transactions = new ArrayList<>();
+            while (rs.next()) {
+                Transaction transaction = new Transaction(
+                        rs.getDate("transaction_date").toLocalDate(),
+                        rs.getString("sender"),
+                        rs.getString("receiver"),
+                        rs.getInt("medicine_id"),
+                        rs.getInt("quantity"),
+                        rs.getString("batch_number"),
+                        rs.getString("sub_batch_number"),
+                        rs.getDate("production_date").toLocalDate(),
+                        rs.getDate("expiry_date").toLocalDate(),
+                        rs.getString("additional_info"),
+                        rs.getString("digital_signature")
+                );
+                transactions.add(transaction);
+            }
+            return transactions;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public User getOrigin(Transaction transaction, int role){
+        try {
+            String query = "";
+
+            if(role == 1){
+                //get manufacture
+                query = "SELECT * FROM transactions t " +
+                        "JOIN users u ON t.sender = u.user_id " +
+                        "WHERE t.batch_number = " + transaction.getBatchNumber() + " AND u.role = 1";
+            }else if(role == 2){
+                //get distributor
+                query = "SELECT * FROM transactions t " +
+                        "JOIN users u ON t.sender = u.user_id " +
+                        "WHERE t.batch_number = " + transaction.getBatchNumber() + " AND t.sub_batch_number = "+ transaction.getSubBatchNumber() + " AND u.role = 2";
+            }else{
+                //get healthcare organisation
+                query = "SELECT * FROM users WHERE user_id = '" + transaction.getSender() + "';";
+            }
+
+            ResultSet rs = JDBCManager.executeQuery(query);
+
+            if (rs.next()) {
+                return extractUserFromResultSet(rs);
+            }
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public User getUserById(String userId){
+        try {
+            String query = "SELECT * FROM users WHERE user_id = '" + userId + "';";
+            ResultSet rs = JDBCManager.executeQuery(query);
+            if (rs.next()) {
+                return extractUserFromResultSet(rs);
+            }
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private User extractUserFromResultSet(ResultSet rs) throws SQLException {
+        return new User(
+                rs.getString("user_id"),
+                rs.getString("username"),
+                rs.getString("password"),
+                rs.getInt("role"),
+                rs.getString("email"),
+                rs.getLong("contact_number")
+        );
     }
 }
