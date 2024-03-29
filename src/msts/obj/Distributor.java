@@ -1,5 +1,10 @@
 package msts.obj;
 
+import msts.JDBCManager;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
 public class Distributor extends User{
 
     public Distributor() {
@@ -16,5 +21,33 @@ public class Distributor extends User{
 
     public Distributor(String userId, String username, String password, int role, String email, Long contactNumber) {
         super(userId, username, password, role, email, contactNumber);
+    }
+
+    public ArrayList<ArrayList<String>> getMedicineBatchFromManufacturer() {
+        String query = "SELECT t.sender, t.medicine_id, t.batch_number, t.production_date, t.expiry_date, m.*, u.username, i.quantity " +
+                "FROM transactions t JOIN medicine m on t.medicine_id = m.medicine_id JOIN users u on t.sender = u.user_id " +
+                "JOIN inventory i on i.batch_number = t.batch_number WHERE u.role = 1 AND i.quantity > 0;";
+        ArrayList<ArrayList<String>> medicineBatch = new ArrayList<>();
+        try {
+            ResultSet rs = JDBCManager.executeQuery(query);
+            ArrayList<String> result;
+            while (rs.next()) {
+                result = new ArrayList<>();
+                result.add(rs.getString("sender"));
+                result.add(rs.getString("username"));
+                result.add(rs.getString("medicine_id"));
+                result.add(rs.getString("batch_number"));
+                result.add(rs.getString("production_date"));
+                result.add(rs.getString("expiry_date"));
+                result.add(rs.getString("name"));
+                result.add(rs.getString("type"));
+                result.add(rs.getString("price"));
+                result.add(rs.getString("quantity"));
+                medicineBatch.add(result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return medicineBatch;
     }
 }

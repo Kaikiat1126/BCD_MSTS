@@ -1,5 +1,10 @@
 package msts.menu;
 
+import msts.StatusContainer;
+import msts.obj.Distributor;
+
+import java.util.ArrayList;
+
 public class DistributorMenu extends StackholderMenu {
 
     public static DistributorMenu instance = null;
@@ -28,8 +33,23 @@ public class DistributorMenu extends StackholderMenu {
     }
 
     public void orderMedicine(){
+        Distributor distributor = (Distributor) StatusContainer.currentUser;
+        ArrayList<ArrayList<String>> medicines = distributor.getMedicineBatchFromManufacturer();
+        if (medicines.isEmpty()) {
+            System.out.println("\nNo Medicine Available to Order!");
+            return;
+        }
+
         System.out.println("\nOrder Medicine From Manufacturer");
         System.out.println("-------------------------------");
+        System.out.printf("%-4s %-15s %-18s %-10s %-10s %-10s %-15s %-15s %-25s\n",
+                "No.", "Manufacturer", "Medicine", "Type", "Price", "Quantity", "Production Date", "Expiry Date", "Batch No");
+        System.out.println("-----------------------------------------------------------------------------------------------------------------");
+        for (int i = 0; i < medicines.size(); i++) {
+            System.out.printf("%-4d %-15s %-18s %-10s %-10s %-10s %-15s %-15s %-25s\n",
+                    i + 1, medicines.get(i).get(1), medicines.get(i).get(6), medicines.get(i).get(7), medicines.get(i).get(8),
+                    medicines.get(i).get(9), medicines.get(i).get(4), medicines.get(i).get(5), medicines.get(i).get(3));
+        }
     }
 
 }
