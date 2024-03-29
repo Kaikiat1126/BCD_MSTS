@@ -1,8 +1,11 @@
 package msts.obj;
 
 import msts.JDBCManager;
+import msts.StatusContainer;
+import msts.Transaction;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Distributor extends User{
@@ -49,5 +52,36 @@ public class Distributor extends User{
             e.printStackTrace();
         }
         return medicineBatch;
+    }
+
+    public void createNewTransaction(ArrayList<String> medicineBatch) {
+        try {
+            Transaction transaction = new Transaction(
+                    LocalDate.now(), medicineBatch.get(0), getUserId(), Integer.parseInt(medicineBatch.get(2)),
+                    Integer.parseInt(medicineBatch.get(9)), medicineBatch.get(3), "0",
+                    LocalDate.parse(medicineBatch.get(4)), LocalDate.parse(medicineBatch.get(5)), medicineBatch.get(10)
+            );
+            transaction.signTransaction(getPrivateKey());
+
+            String query = "INSERT INTO transactions (" +
+                    "transaction_date, sender, receiver, medicine_id, quantity, batch_number, sub_batch_number, production_date, expiry_date, additional_info, digital_signature" +
+                    ") VALUES ('" +
+                    transaction.getTransactionDate() + "', '" + transaction.getSender() + "', '" + transaction.getReceiver() + "', " +
+                    transaction.getMedicineId() + ", " + transaction.getQuantity() + ", '" + transaction.getBatchNumber() + "', '" + transaction.getSubBatchNumber() + "', '" +
+                    transaction.getProductionDate() + "', '" + transaction.getExpiryDate() + "', '" + transaction.getAdditionalInfo() + "', '" + transaction.getDigitalSignature() + "');";
+            String insertQuery = "INSERT INTO inventory (medicine_id, user_id, quantity, batch_number) VALUES (" + medicineBatch.get(2) + ", '" + getUserId() + "', " + medicineBatch.get(9) + ", '" + medicineBatch.get(3) + "');";
+            String updateQuery = "UPDATE inventory SET quantity = 0 WHERE user_id = '" + medicineBatch.get(0) + "' AND batch_number = '" + medicineBatch.get(3) + "';";
+
+            JDBCManager.executeUpdate(insertQuery);
+            JDBCManager.executeUpdate(updateQuery);
+            JDBCManager.executeUpdate(query);
+
+            StatusContainer.blockChain.addNewBlock(transaction);
+
+            System.out.println("New Medicine Order placed successfully!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

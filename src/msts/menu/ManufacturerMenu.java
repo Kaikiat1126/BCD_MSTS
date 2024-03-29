@@ -51,7 +51,7 @@ public class ManufacturerMenu extends StackholderMenu {
             System.out.println((i + 1) + ". " + medicines.get(i).getName());
         }
 
-        int option = MenuTool.getMenuOption(medicines.size(), "Enter your option: ");
+        int option = MenuTool.getMenuOption(medicines.size(), "Enter your choice: ");
         int medicineID = medicines.get(option - 1).getMedicineID();
         int quantity = MenuTool.getIntegerInput("Enter quantity: ");
         String additionalInfo = MenuTool.getStringInput("Enter additional information: ");

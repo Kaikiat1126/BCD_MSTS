@@ -50,6 +50,12 @@ public class DistributorMenu extends StackholderMenu {
                     i + 1, medicines.get(i).get(1), medicines.get(i).get(6), medicines.get(i).get(7), medicines.get(i).get(8),
                     medicines.get(i).get(9), medicines.get(i).get(4), medicines.get(i).get(5), medicines.get(i).get(3));
         }
+        int option = MenuTool.getMenuOption(medicines.size(), "\nEnter your choice: ");
+        ArrayList<String> selectedBatch = medicines.get(option-1);
+        String additionalInfo = MenuTool.getStringInput("Enter additional information: ");
+        selectedBatch.add(additionalInfo);
+
+        distributor.createNewTransaction(selectedBatch);
     }
 
 }
