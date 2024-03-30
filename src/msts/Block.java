@@ -28,7 +28,7 @@ public class Block implements Serializable {
     }
 
     public void calculateCurrentHash() {
-        String blockHash = Hasher.sha256Salt(
+        String blockHash = Hasher.sha256(
                 header.index + header.previousHash + header.timestamp + transactionCollection + merkleRoot
         );
         header.setCurrentHash(blockHash);

@@ -4,6 +4,8 @@ import msts.StatusContainer;
 import msts.Transaction;
 import msts.obj.User;
 
+import java.util.List;
+
 public abstract class StackholderMenu {
 
     public static StackholderMenu instance = null;
@@ -15,6 +17,12 @@ public abstract class StackholderMenu {
                 public void generateMenu() {
                     throw new UnsupportedOperationException("Not supported yet.");
                 }
+
+                @Override
+                public void viewOrigin(int transactionIndex) {
+                    throw new UnsupportedOperationException("Not supported yet.");
+                }
+
             };
         }
         return instance;
@@ -22,12 +30,46 @@ public abstract class StackholderMenu {
 
     public StackholderMenu(){}
     public abstract void generateMenu();
-    public void ViewMedicineTransaction(){}
+
+    public abstract void viewOrigin(int transactionIndex);
 
     protected void logout() {
         System.out.println("Logging out...");
         StatusContainer.currentUser = null;
         MainMenu.getMenu().generateMainMenu();
+    }
+
+    public void ViewMedicineTransaction(){
+        User user = StatusContainer.currentUser;
+        List<Transaction> transactions = user.getTransactions();
+
+        if(transactions.isEmpty()){
+            System.out.println("\nNo Medicine Transaction Available!");
+            return;
+        }
+        System.out.println("\nView Medicine Transaction");
+        System.out.println("--------------------------");
+        System.out.printf("%-4s %-50s %-12s %-8s %-20s %-10s\n", "No.", "TxId", "Medicine ID", "Quantity", "Transaction Date", "Signature");
+        System.out.println("--------------------------------------------------------------------------------------------------------");
+        for (int i = 0; i < transactions.size(); i++) {
+            try {
+                Transaction transaction = transactions.get(i);
+                User sender = User.getUserById(transaction.getSender());
+                boolean isTransactionSignatureValid = transaction.verifySignature(sender.getPublicKey());
+                System.out.printf("%-4d %-50s %-12s %-8s %-20s %-10s\n",
+                        i + 1, transaction.getTransactionId(),
+                        transaction.getMedicineId(),
+                        transaction.getQuantity(),
+                        transaction.getTransactionDate(),
+                        isTransactionSignatureValid ? "Valid" : "Invalid");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("--------------------------------------------------------------------------------------------------------");
+        int transactionIndex = MenuTool.getMenuOption(transactions.size()+1, "Select transaction to view medicine details: ");
+        viewTransactionDetails(transactionIndex);
+        viewOrigin(transactionIndex);
     }
 
     protected void viewTransactionDetails(int transactionIndex){
@@ -48,10 +90,10 @@ public abstract class StackholderMenu {
         User origin = StatusContainer.currentUser.getOrigin(transaction, role);
         if (origin != null) {
             System.out.println(roleName + ":");
-            System.out.println("User ID: " + origin.getUserId());
+            System.out.println("User ID : " + origin.getUserId());
             System.out.println("Username: " + origin.getUserName());
-            System.out.println("Email: " + origin.getEmail());
-            System.out.println("Phone: " + origin.getContactNumber());
+            System.out.println("Email   : " + origin.getEmail());
+            System.out.println("Phone   : " + origin.getContactNumber());
             System.out.println();
         } else {
             System.out.println(roleName + " not found.");

@@ -4,6 +4,7 @@ import msts.DigitalSignature;
 import msts.StatusContainer;
 import msts.Transaction;
 import msts.obj.Patient;
+import msts.obj.User;
 
 import java.util.List;
 
@@ -46,44 +47,7 @@ public class PatientMenu extends StackholderMenu {
         } while (option != 3);
     }
 
-    public void ViewMedicineTransaction(){
-        Patient patient = (Patient) StatusContainer.currentUser;
-        List<Transaction> transactions = patient.getTransactions();
-
-        if(transactions.isEmpty()){
-            System.out.println("\nNo Medicine Transaction Available!");
-            return;
-        }
-        System.out.println("\nView Medicine Transaction");
-        System.out.println("--------------------------");
-        System.out.printf("%-4s %-15s %-12s %-8s %-15s %-10s\n", "No.", "TxId", "Medicine ID", "Quantity", "Transaction Date", "Signature");
-        System.out.println("-------------------------------------------------");
-        for (int i = 0; i < transactions.size(); i++) {
-            try {
-                Transaction transaction = transactions.get(i);
-                Boolean isTransactionSignatureValid = DigitalSignature.getInstance().isTextAndSignatureValid(
-                        transaction.getTransactionId(),
-                        transaction.getDigitalSignature().getBytes(), // Convert signature string to byte array
-                        patient.getUserById(transaction.getSender()).getPublicKey()
-                );
-                System.out.printf("%-4d %-15s %-12s %-8s %-15s %-10s\n",
-                        i + 1, transaction.getTransactionId(),
-                        transaction.getMedicineId(),
-                        transaction.getQuantity(),
-                        transaction.getTransactionDate(),
-                        isTransactionSignatureValid ? "Valid" : "Invalid");
-                System.out.println();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println("Select transaction to view medicine details:");
-        int transactionIndex = MenuTool.getMenuOption(transactions.size()+1, "Enter transaction index: ");
-        viewTransactionDetails(transactionIndex);
-        viewOrigin(transactionIndex);
-    }
-
-    private void viewOrigin(int transactionIndex) {
+    public void viewOrigin(int transactionIndex) {
         System.out.println("\nView Origin");
         System.out.println("--------------------------");
         Transaction selectedTransaction = StatusContainer.currentUser.getTransactions().get(transactionIndex - 1);

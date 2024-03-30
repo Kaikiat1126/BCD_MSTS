@@ -1,5 +1,8 @@
 package msts.menu;
 
+import msts.StatusContainer;
+import msts.Transaction;
+
 public class HealthcareOrganisationMenu extends StackholderMenu {
 
     static HealthcareOrganisationMenu instance = null;
@@ -37,5 +40,15 @@ public class HealthcareOrganisationMenu extends StackholderMenu {
                     break;
             }
         } while (option != 3);
+    }
+
+    public void viewOrigin(int transactionIndex) {
+        System.out.println("\nView Origin");
+        System.out.println("--------------------------");
+        Transaction selectedTransaction = StatusContainer.currentUser.getTransactions().get(transactionIndex - 1);
+
+        // View origin details based on role
+        viewOriginDetails(selectedTransaction, 1, "Manufacturer");
+        viewOriginDetails(selectedTransaction, 2, "Distributor");
     }
 }
