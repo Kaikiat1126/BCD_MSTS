@@ -56,27 +56,13 @@ public class Manufacturer extends User{
                     medicineID + quantity + getUserId() + getEmail() +
                             productionDate + expiryDate + additionalInfo
             );
-
             Transaction transaction = new Transaction(
                     LocalDate.now(), getUserId(), "",
                     medicineID, quantity, batch, "0",
                     productionDate, expiryDate, additionalInfo
             );
-            transaction.signTransaction(getPrivateKey());
-
-            String query = "INSERT INTO transactions (" +
-                    "transaction_date, sender, receiver, medicine_id, quantity, batch_number, sub_batch_number, production_date, expiry_date, additional_info, digital_signature" +
-                    ") VALUES ('" +
-                    transaction.getTransactionDate() + "', '" + transaction.getSender() + "', '" + transaction.getReceiver() + "', " +
-                    transaction.getMedicineId() + ", " + transaction.getQuantity() + ", '" + transaction.getBatchNumber() + "', '" + transaction.getSubBatchNumber() + "', '" +
-                    transaction.getProductionDate() + "', '" + transaction.getExpiryDate() + "', '" + transaction.getAdditionalInfo() + "', '" + transaction.getDigitalSignature() + "');";
-            String insertInventory = "INSERT INTO inventory (medicine_id, user_id, quantity, batch_number) VALUES (" + medicineID + ", '" + getUserId() + "', " + quantity + ", '" + batch + "');";
-
-            JDBCManager.executeUpdate(insertInventory);
-            JDBCManager.executeUpdate(query);
-            StatusContainer.blockChain.addNewTransaction(transaction);
-
-            System.out.println("New Medicine Batch created successfully!");
+            createNewTransaction(transaction, false, false, "");
+            System.out.println("\nNew Medicine Batch created successfully!");
 
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -1,9 +1,6 @@
 package msts.obj;
 
-import msts.Hasher;
-import msts.JDBCManager;
-import msts.StatusContainer;
-import msts.Transaction;
+import msts.*;
 
 import java.sql.ResultSet;
 import java.time.LocalDate;
@@ -61,32 +58,13 @@ public class Patient extends User{
             Transaction transaction = new Transaction(
                     LocalDate.now(), medicineBatch.get(0), getUserId(), Integer.parseInt(medicineBatch.get(2)),
                     Integer.parseInt(medicineBatch.get(11)), medicineBatch.get(3), medicineBatch.get(10),
-                    LocalDate.parse(medicineBatch.get(4)), LocalDate.parse(medicineBatch.get(5)), medicineBatch.get(11)
+                    LocalDate.parse(medicineBatch.get(4)), LocalDate.parse(medicineBatch.get(5)), medicineBatch.get(12)
             );
-            transaction.signTransaction(getPrivateKey());
-
             int updatedInventoryQuantity = Integer.parseInt(medicineBatch.get(9)) - Integer.parseInt(medicineBatch.get(11));
+            String updateQuery = "UPDATE inventory SET quantity = " + updatedInventoryQuantity + " WHERE user_id = '" + transaction.getSender() + "' AND batch_number = '" + medicineBatch.get(10) + "';";
+            createNewTransaction(transaction, true, true, updateQuery);
 
-            String query = "INSERT INTO transactions (" +
-                    "transaction_date, sender, receiver, medicine_id, quantity, batch_number, sub_batch_number, production_date, expiry_date, additional_info, digital_signature" +
-                    ") VALUES ('" +
-                    transaction.getTransactionDate() + "', '" + transaction.getSender() + "', '" + transaction.getReceiver() + "', " +
-                    transaction.getMedicineId() + ", " + transaction.getQuantity() + ", '" + transaction.getBatchNumber() + "', '" + transaction.getSubBatchNumber() + "', '" +
-                    transaction.getProductionDate() + "', '" + transaction.getExpiryDate() + "', '" + transaction.getAdditionalInfo() + "', '" + transaction.getDigitalSignature() + "');";
-            String insertQuery = "INSERT INTO inventory (medicine_id, user_id, quantity, batch_number) VALUES (" + medicineBatch.get(2) + ", '" + getUserId() + "', " + medicineBatch.get(11) + ", '" + medicineBatch.get(10) + "');";
-            String updateQuery = "UPDATE inventory SET quantity = " + updatedInventoryQuantity + " WHERE user_id = '" + medicineBatch.get(0) + "' AND batch_number = '" + medicineBatch.get(3) + "';";
-
-//            System.out.println(insertQuery);
-//            System.out.println(updateQuery);
-//            System.out.println(query);
-
-            JDBCManager.executeUpdate(insertQuery);
-            JDBCManager.executeUpdate(updateQuery);
-            JDBCManager.executeUpdate(query);
-
-            StatusContainer.blockChain.addNewBlock(transaction);
-
-            System.out.println("New Medicine Purchased successfully!");
+            System.out.println("\nNew Medicine Purchased successfully!");
 
         } catch (Exception e) {
             e.printStackTrace();

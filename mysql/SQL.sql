@@ -47,6 +47,6 @@ CREATE TABLE transactions (
     digital_signature mediumtext
 );
 
-INSERT INTO `users` VALUES ('384e7bab-001e-34b5-9058-3cb021d5b80f','Kaikiat',1,'123456789','kaikiat@gmail.com','839uNKwmWwjkTPmU16phlg=='),('c6900fe3-4f5d-340a-b0a2-c5b22b561838','Lennon',2,'124567893','lennon@gmail.com','Oghx9JjS2+Lw4Wl4Sfm3pg==');
+INSERT INTO `users` VALUES ('371cba66-4013-36f8-8512-d6735fdf24a7','Pheymin',3,'123456987','pheymin@mail.com','6QOjyc++WYKY8354gYFZig=='),('384e7bab-001e-34b5-9058-3cb021d5b80f','Kaikiat',1,'123456789','kaikiat@gmail.com','839uNKwmWwjkTPmU16phlg=='),('c6900fe3-4f5d-340a-b0a2-c5b22b561838','Lennon',2,'124567893','lennon@gmail.com','Oghx9JjS2+Lw4Wl4Sfm3pg=='),('fe61c900-43a9-3cb0-8076-c2042eb0b4f1','SiwaRagu',4,'124567893','siwa@mail.com','hwHnkkC/7YsmLypvY06QOg==');
 INSERT INTO `medicine` VALUES (1,'Panadol','Drug','384e7bab-001e-34b5-9058-3cb021d5b80f',10.00),(2,'Ampicillin','Powder','384e7bab-001e-34b5-9058-3cb021d5b80f',100.00);
 

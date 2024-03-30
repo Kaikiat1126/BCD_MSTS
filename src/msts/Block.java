@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class Block implements Serializable {
     private Header header;
-    private Transaction[] transactions;
+    private ArrayList<Transaction> transactions;
     private String merkleRoot = "0";
     @Serial
     private static final long serialVersionUID = 1L;
@@ -18,51 +18,38 @@ public class Block implements Serializable {
     public Block() {
         header = new Header();
         header.setTimestamp(new Timestamp(System.currentTimeMillis()).getTime());
-        transactions = new Transaction[10];
+        transactions = new ArrayList<>();
     }
 
     //for genesis block only
     public Block(String previousHash) {
         header = new Header();
         header.setTimestamp(new Timestamp(System.currentTimeMillis()).getTime());
-        transactions = new Transaction[0];
         header.setPreviousHash(previousHash);
         calculateCurrentHash();
     }
 
     public void calculateCurrentHash() {
         String blockHash = Hasher.sha256(
-                header.index + header.previousHash + header.timestamp + Arrays.toString(transactions) + merkleRoot
+                header.index + header.previousHash + header.timestamp + transactions + merkleRoot
         );
         header.setCurrentHash(blockHash);
     }
 
     public void calculateMerkleRoot() {
-        List<Transaction> transactionList = new ArrayList<>(Arrays.asList(transactions));
-        transactionList.removeIf(Objects::isNull);
-        MerkleTree merkleTree = MerkleTree.getInstance(transactionList);
+        MerkleTree merkleTree = MerkleTree.getInstance(transactions);
         merkleTree.build();
         this.merkleRoot = merkleTree.getRoot();
     }
 
-    public Transaction[] getTransactions() { return transactions; }
+    public ArrayList<Transaction> getTransactions() { return transactions; }
 
     public void addTransaction(Transaction transaction) {
-        for (int i = 0; i < transactions.length; i++) {
-            if (transactions[i] == null) {
-                transactions[i] = transaction;
-                break;
-            }
-        }
+        transactions.add(transaction);
     }
 
     public boolean isFull() {
-        for (Transaction transaction : transactions) {
-            if (transaction == null) {
-                return false;
-            }
-        }
-        return true;
+        return transactions == null || transactions.size() == 10;
     }
 
     public Header getHeader() {

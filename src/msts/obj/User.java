@@ -2,6 +2,7 @@ package msts.obj;
 
 import msts.JDBCManager;
 import msts.KeyAccess;
+import msts.StatusContainer;
 import msts.Transaction;
 
 import java.security.PrivateKey;
@@ -94,6 +95,29 @@ public class User {
         return KeyAccess.getPublicKey(userId);
     }
 
+    public void createNewTransaction(Transaction transaction, boolean useSubBatch, boolean needUpdate, String updateQuery) {
+        try {
+            transaction.signTransaction(KeyAccess.getPrivateKey(transaction.getSender()));
+
+            String txQuery = "INSERT INTO transactions (" +
+                    "transaction_date, sender, receiver, medicine_id, quantity, batch_number, sub_batch_number, production_date, expiry_date, additional_info, digital_signature" +
+                    ") VALUES ('" +
+                    transaction.getTransactionDate() + "', '" + transaction.getSender() + "', '" + transaction.getReceiver() + "', " +
+                    transaction.getMedicineId() + ", " + transaction.getQuantity() + ", '" + transaction.getBatchNumber() + "', '" + transaction.getSubBatchNumber() + "', '" +
+                    transaction.getProductionDate() + "', '" + transaction.getExpiryDate() + "', '" + transaction.getAdditionalInfo() + "', '" + transaction.getDigitalSignature() + "');";
+            String batchNumber = useSubBatch ? transaction.getSubBatchNumber() : transaction.getBatchNumber();
+            String insertQuery = "INSERT INTO inventory (medicine_id, user_id, quantity, batch_number) VALUES (" + transaction.getMedicineId() + ", '" + getUserId() + "', " + transaction.getQuantity() + ", '" + batchNumber + "');";
+
+            String[] queries = needUpdate ? new String[]{txQuery, insertQuery, updateQuery} : new String[]{txQuery, insertQuery};
+            for (String query : queries) {
+                JDBCManager.executeUpdate(query);
+            }
+            StatusContainer.blockChain.addNewTransaction(transaction);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<Transaction> getTransactions(){
         try {
             String query = "SELECT * FROM transactions WHERE receiver = '" + this.getUserId() + "';";
@@ -137,7 +161,7 @@ public class User {
                 //get distributor
                 query = "SELECT * FROM transactions t " +
                         "JOIN users u ON t.sender = u.user_id " +
-                        "WHERE t.batch_number = '" + transaction.getBatchNumber() + "' AND t.sub_batch_number = "+ transaction.getSubBatchNumber() + " AND u.role = 2";
+                        "WHERE t.batch_number = '" + transaction.getBatchNumber() + "' AND t.sub_batch_number = '"+ transaction.getSubBatchNumber() + "' AND u.role = 2";
             }else{
                 //get healthcare organisation
                 query = "SELECT * FROM users WHERE user_id = '" + transaction.getSender() + "';";

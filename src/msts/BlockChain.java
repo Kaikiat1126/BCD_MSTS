@@ -33,7 +33,7 @@ public class BlockChain implements Serializable {
         persist();
     }
 
-    public void createNewBlock(Transaction transaction) {
+    private void createNewBlock(Transaction transaction) {
         Block newBlock = new Block();  // create new block
         newBlock.getHeader().setIndex(chain.size());
         newBlock.getHeader().setPreviousHash(chain.getLast().getHeader().currentHash);
@@ -60,7 +60,7 @@ public class BlockChain implements Serializable {
         }
     }
 
-    public void addNewBlock(Block newBlock){
+    private void addNewBlock(Block newBlock){
         chain = getBlocks();
         chain.add(newBlock);
         persist();

@@ -11,15 +11,10 @@ public class MenuTool {
     }
 
     public static int getMenuOption(int max, String prompt, String errorMessage) {
-        String option;
         while (true) {
-            System.out.print(prompt);
-            option = scanner.nextLine();
-            if(!option.isEmpty()){
-                int opt = Integer.parseInt(option);
-                if(opt > 0 && opt <= max){
-                    return opt;
-                }
+            int input = getIntegerInput(prompt);
+            if (input > 0 && input <= max) {
+                return input;
             }
             System.out.println(errorMessage);
         }
