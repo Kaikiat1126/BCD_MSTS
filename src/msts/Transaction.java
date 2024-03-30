@@ -3,8 +3,9 @@ package msts;
 import java.io.Serial;
 import java.io.Serializable;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Base64;
 
 public class Transaction implements Serializable {
 
@@ -62,6 +63,7 @@ public class Transaction implements Serializable {
         this.expiryDate = expiryDate;
         this.additionalInfo = additionalInfo;
         this.digitalSignature = digitalSignature;
+        this.transactionId = calculateHash();
     }
 
     public LocalDate getTransactionDate() {
@@ -108,9 +110,7 @@ public class Transaction implements Serializable {
         return digitalSignature;
     }
 
-    public byte[] getDigitalSignatureBytes() {
-        return digitalSignature.getBytes();
-    }
+    public byte[] getDigitalSignatureBytes() { return Base64.getDecoder().decode(digitalSignature);}
 
     public String getTransactionId() { return transactionId; }
 
@@ -132,7 +132,7 @@ public class Transaction implements Serializable {
     }
 
     public String calculateHash() {
-        return Hasher.sha256Salt(
+        return Hasher.sha256(
                 transactionDate + sender +
                         receiver + medicineId +
                         quantity + batchNumber +
@@ -146,6 +146,10 @@ public class Transaction implements Serializable {
             return;
         }
         byte[] sign = DigitalSignature.getInstance().getSignature(calculateHash(), privateKey);
-        digitalSignature = Arrays.toString(sign);
+        digitalSignature = java.util.Base64.getEncoder().encodeToString(sign);
+    }
+
+    public boolean verifySignature(PublicKey publicKey) {
+        return DigitalSignature.getInstance().isTextAndSignatureValid(calculateHash(), digitalSignature, publicKey);
     }
 }

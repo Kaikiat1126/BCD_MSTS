@@ -1,6 +1,7 @@
 package msts.obj;
 
 import msts.JDBCManager;
+import msts.KeyAccess;
 import msts.StatusContainer;
 import msts.Transaction;
 
@@ -61,7 +62,7 @@ public class Distributor extends User{
                     Integer.parseInt(medicineBatch.get(9)), medicineBatch.get(3), "0",
                     LocalDate.parse(medicineBatch.get(4)), LocalDate.parse(medicineBatch.get(5)), medicineBatch.get(10)
             );
-            transaction.signTransaction(getPrivateKey());
+            transaction.signTransaction(KeyAccess.getPrivateKey(medicineBatch.get(0)));
 
             String query = "INSERT INTO transactions (" +
                     "transaction_date, sender, receiver, medicine_id, quantity, batch_number, sub_batch_number, production_date, expiry_date, additional_info, digital_signature" +

@@ -1,9 +1,13 @@
 package msts.menu;
 
+import msts.DigitalSignature;
 import msts.StatusContainer;
+import msts.Transaction;
 import msts.obj.Distributor;
+import msts.obj.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DistributorMenu extends StackholderMenu {
 
@@ -58,4 +62,11 @@ public class DistributorMenu extends StackholderMenu {
         distributor.createNewTransaction(selectedBatch);
     }
 
+    public void viewOrigin(int transactionIndex) {
+        User distributor = StatusContainer.currentUser;
+        System.out.println("\nView Origin");
+        System.out.println("--------------------------");
+        Transaction selectedTransaction = distributor.getTransactions().get(transactionIndex - 1);
+        viewOriginDetails(selectedTransaction, 1, "Manufacturer");
+    }
 }

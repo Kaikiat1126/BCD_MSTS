@@ -9,6 +9,7 @@ import java.security.PublicKey;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     protected String userId;
@@ -93,9 +94,12 @@ public class User {
         return KeyAccess.getPublicKey(userId);
     }
 
-    public ArrayList<Transaction> getTransactions(){
+    public List<Transaction> getTransactions(){
         try {
             String query = "SELECT * FROM transactions WHERE receiver = '" + this.getUserId() + "';";
+            if(this.getRole() == 1){
+                query = "SELECT * FROM transactions WHERE sender = '" + this.getUserId() + "' AND receiver = '';";
+            }
             ResultSet rs = JDBCManager.executeQuery(query);
             ArrayList<Transaction> transactions = new ArrayList<>();
             while (rs.next()) {
@@ -128,12 +132,12 @@ public class User {
                 //get manufacture
                 query = "SELECT * FROM transactions t " +
                         "JOIN users u ON t.sender = u.user_id " +
-                        "WHERE t.batch_number = " + transaction.getBatchNumber() + " AND u.role = 1";
+                        "WHERE t.batch_number = '" + transaction.getBatchNumber() + "' AND u.role = 1";
             }else if(role == 2){
                 //get distributor
                 query = "SELECT * FROM transactions t " +
                         "JOIN users u ON t.sender = u.user_id " +
-                        "WHERE t.batch_number = " + transaction.getBatchNumber() + " AND t.sub_batch_number = "+ transaction.getSubBatchNumber() + " AND u.role = 2";
+                        "WHERE t.batch_number = '" + transaction.getBatchNumber() + "' AND t.sub_batch_number = "+ transaction.getSubBatchNumber() + " AND u.role = 2";
             }else{
                 //get healthcare organisation
                 query = "SELECT * FROM users WHERE user_id = '" + transaction.getSender() + "';";
@@ -150,7 +154,7 @@ public class User {
         }
     }
 
-    public User getUserById(String userId){
+    public static User getUserById(String userId){
         try {
             String query = "SELECT * FROM users WHERE user_id = '" + userId + "';";
             ResultSet rs = JDBCManager.executeQuery(query);
@@ -163,7 +167,7 @@ public class User {
         }
     }
 
-    private User extractUserFromResultSet(ResultSet rs) throws SQLException {
+    private static User extractUserFromResultSet(ResultSet rs) throws SQLException {
         return new User(
                 rs.getString("user_id"),
                 rs.getString("username"),

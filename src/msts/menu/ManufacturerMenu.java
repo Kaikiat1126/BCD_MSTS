@@ -1,6 +1,7 @@
 package msts.menu;
 
 import msts.StatusContainer;
+import msts.Transaction;
 import msts.obj.Manufacturer;
 import msts.obj.Medicine;
 
@@ -71,5 +72,14 @@ public class ManufacturerMenu extends StackholderMenu {
         manufacturer.addNewMedicine(name, type, price);
 
         System.out.println("\nNew Medicine Added Successful!");
+    }
+
+    public void viewOrigin(int transactionIndex) {
+        System.out.println("\nView Origin");
+        System.out.println("--------------------------");
+        Transaction selectedTransaction = StatusContainer.currentUser.getTransactions().get(transactionIndex - 1);
+
+        // View origin details based on role
+        viewOriginDetails(selectedTransaction, 1, "Manufacturer");
     }
 }

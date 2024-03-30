@@ -3,8 +3,8 @@ package msts.menu;
 import msts.StatusContainer;
 import msts.obj.Distributor;
 import msts.obj.HealthcareOrganisation;
-
 import java.util.ArrayList;
+import msts.Transaction;
 
 public class HealthcareOrganisationMenu extends StackholderMenu {
 
@@ -60,5 +60,15 @@ public class HealthcareOrganisationMenu extends StackholderMenu {
         selectedBatch.add(additionalInfo);
 
         healthcareOrganisation.createNewTransaction(selectedBatch);
+    }
+
+    public void viewOrigin(int transactionIndex) {
+        System.out.println("\nView Origin");
+        System.out.println("--------------------------");
+        Transaction selectedTransaction = StatusContainer.currentUser.getTransactions().get(transactionIndex - 1);
+
+        // View origin details based on role
+        viewOriginDetails(selectedTransaction, 1, "Manufacturer");
+        viewOriginDetails(selectedTransaction, 2, "Distributor");
     }
 }
