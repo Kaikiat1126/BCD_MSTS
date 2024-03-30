@@ -29,7 +29,7 @@ public class Distributor extends User{
     public ArrayList<ArrayList<String>> getMedicineBatchFromManufacturer() {
         String query = "SELECT t.sender, t.medicine_id, t.batch_number, t.production_date, t.expiry_date, m.*, u.username, i.quantity " +
                 "FROM transactions t JOIN medicine m on t.medicine_id = m.medicine_id JOIN users u on t.sender = u.user_id " +
-                "JOIN inventory i on i.batch_number = t.batch_number WHERE u.role = 1 AND i.quantity > 0;";
+                "JOIN inventory i on i.batch_number = t.batch_number AND i.user_id = t.sender WHERE u.role = 1 AND i.quantity > 0;";
         ArrayList<ArrayList<String>> medicineBatch = new ArrayList<>();
         try {
             ResultSet rs = JDBCManager.executeQuery(query);
