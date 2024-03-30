@@ -7,6 +7,10 @@ public class MenuTool {
     static Scanner scanner = new Scanner(System.in);
 
     public static int getMenuOption(int max, String prompt) {
+        return getMenuOption(max, prompt, "Invalid input, please try again\n");
+    }
+
+    public static int getMenuOption(int max, String prompt, String errorMessage) {
         String option;
         while (true) {
             System.out.print(prompt);
@@ -17,7 +21,7 @@ public class MenuTool {
                     return opt;
                 }
             }
-            System.out.println("Invalid input, please try again\n");
+            System.out.println(errorMessage);
         }
     }
 
@@ -63,4 +67,6 @@ public class MenuTool {
             }
         }
     }
+
+
 }
