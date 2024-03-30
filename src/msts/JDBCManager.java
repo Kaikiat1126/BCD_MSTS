@@ -5,7 +5,7 @@ import java.sql.*;
 public class JDBCManager {
     private static final String url = "jdbc:mysql://127.0.0.1:3306/bcd";
     private static final String user = "root";
-    private static final String password = "Gotx@djj9";
+    private static final String password = "Password";
 
     private static Connection conn = null;
 
