@@ -146,10 +146,19 @@ public class Transaction implements Serializable {
             return;
         }
         byte[] sign = DigitalSignature.getInstance().getSignature(calculateHash(), privateKey);
-        digitalSignature = java.util.Base64.getEncoder().encodeToString(sign);
+        digitalSignature = Base64.getEncoder().encodeToString(sign);
     }
 
     public boolean verifySignature(PublicKey publicKey) {
         return DigitalSignature.getInstance().isTextAndSignatureValid(calculateHash(), digitalSignature, publicKey);
+    }
+
+    public boolean verify() {
+        try {
+            return verifySignature(KeyAccess.getPublicKey(sender));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

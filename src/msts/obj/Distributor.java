@@ -77,7 +77,7 @@ public class Distributor extends User{
             JDBCManager.executeUpdate(updateQuery);
             JDBCManager.executeUpdate(query);
 
-            StatusContainer.blockChain.addNewBlock(transaction);
+            StatusContainer.blockChain.addNewTransaction(transaction);
 
             System.out.println("New Medicine Order placed successfully!");
 

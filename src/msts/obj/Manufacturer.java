@@ -74,7 +74,7 @@ public class Manufacturer extends User{
 
             JDBCManager.executeUpdate(insertInventory);
             JDBCManager.executeUpdate(query);
-            StatusContainer.blockChain.addNewBlock(transaction);
+            StatusContainer.blockChain.addNewTransaction(transaction);
 
             System.out.println("New Medicine Batch created successfully!");
 
