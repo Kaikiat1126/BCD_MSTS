@@ -58,7 +58,7 @@ public class HealthcareOrganisation extends User{
             Transaction transaction = new Transaction(
                     LocalDate.now(), medicineBatch.get(0), getUserId(), Integer.parseInt(medicineBatch.get(2)),
                     Integer.parseInt(medicineBatch.get(10)), medicineBatch.get(3), subBatchNumber,
-                    LocalDate.parse(medicineBatch.get(4)), LocalDate.parse(medicineBatch.get(5)), medicineBatch.get(12)
+                    LocalDate.parse(medicineBatch.get(4)), LocalDate.parse(medicineBatch.get(5)), medicineBatch.get(11)
             );
             int updatedInventoryQuantity = Integer.parseInt(medicineBatch.get(9)) - Integer.parseInt(medicineBatch.get(10));
 
