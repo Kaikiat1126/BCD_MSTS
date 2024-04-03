@@ -109,10 +109,9 @@ public class User {
             String insertQuery = "INSERT INTO inventory (medicine_id, user_id, quantity, batch_number) VALUES (" + transaction.getMedicineId() + ", '" + getUserId() + "', " + transaction.getQuantity() + ", '" + batchNumber + "');";
 
             String[] queries = needUpdate ? new String[]{txQuery, insertQuery, updateQuery} : new String[]{txQuery, insertQuery};
-            for (String query : queries) {
-                JDBCManager.executeUpdate(query);
-            }
+
             StatusContainer.blockChain.addNewTransaction(transaction);
+            for (String query : queries) JDBCManager.executeUpdate(query);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

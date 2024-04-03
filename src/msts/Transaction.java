@@ -155,7 +155,7 @@ public class Transaction implements Serializable {
 
     public boolean verify() {
         try {
-            return verifySignature(KeyAccess.getPublicKey(sender));
+            return verifySignature(StatusContainer.currentUser.getPublicKey());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
