@@ -57,9 +57,7 @@ public class MerkleTree {
         return hashLst;
     }
 
-    //generate merkle proof, check if the transaction is in the block
     public Boolean generateProof(String merkleRoot) {
-        //get a block, rebuild the merkle tree, and check if the transaction is in the block with the merkle root
         List<String> tempLst = new ArrayList<>();
         for (Transaction transaction : this.transactionList) {
             tempLst.add(transaction.toString());

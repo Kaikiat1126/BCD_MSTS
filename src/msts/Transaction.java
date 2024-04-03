@@ -8,7 +8,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.time.LocalDate;
 import java.util.Base64;
-import java.util.List;
 
 public class Transaction implements Serializable {
 
@@ -130,7 +129,6 @@ public class Transaction implements Serializable {
                 ", productionDate=" + productionDate +
                 ", expiryDate=" + expiryDate +
                 ", additionalInfo='" + additionalInfo + '\'' +
-                ", digitalSignature='" + digitalSignature + '\'' +
                 '}';
     }
 
@@ -171,7 +169,7 @@ public class Transaction implements Serializable {
             return false;
         }
         MerkleTree merkleTree = MerkleTree.getInstance(block.getTransactions());
-        Boolean proof = merkleTree.generateProof(block.getMerkleRoot());
-        return proof;
+        Boolean proof = merkleTree.generateProof(block.getHeader().getMerkleRoot());
+        return proof != null && proof;
     }
 }
