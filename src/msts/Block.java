@@ -11,7 +11,6 @@ import java.util.Objects;
 public class Block implements Serializable {
     private Header header;
     private ArrayList<Transaction> transactions;
-    private String merkleRoot = "0";
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -31,15 +30,13 @@ public class Block implements Serializable {
 
     public void calculateCurrentHash() {
         String blockHash = Hasher.sha256(
-                header.index + header.previousHash + header.timestamp + transactions + merkleRoot
+                header.index + header.previousHash + header.timestamp + transactions + header.getMerkleRoot()
         );
         header.setCurrentHash(blockHash);
     }
 
     public void calculateMerkleRoot() {
-        MerkleTree merkleTree = MerkleTree.getInstance(transactions);
-        merkleTree.build();
-        this.merkleRoot = merkleTree.getRoot();
+        this.header.calculateMerkleRoot(transactions);
     }
 
     public ArrayList<Transaction> getTransactions() { return transactions; }
