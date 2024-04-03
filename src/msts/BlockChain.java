@@ -2,8 +2,11 @@ package msts;
 
 import com.google.gson.GsonBuilder;
 import jdk.jshell.Snippet;
+import msts.menu.LocalDateTypeAdapter;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -88,7 +91,8 @@ public class BlockChain implements Serializable {
     }
 
     public void distribute(){
-        String blockchain = new GsonBuilder().setPrettyPrinting().create().toJson(chain);
+        GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter());
+        String blockchain = gsonBuilder.setPrettyPrinting().create().toJson(chain);
         System.out.println(blockchain);
     }
 

@@ -1,7 +1,5 @@
 package msts;
 
-import org.javatuples.Pair;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.security.PrivateKey;
@@ -12,15 +10,15 @@ import java.util.Base64;
 public class Transaction implements Serializable {
 
     private String transactionId;
-    private transient LocalDate transactionDate;
+    private LocalDate transactionDate;
     private String sender;
     private String receiver;
     private int medicineId;
     private int quantity;
     private String batchNumber;
     private String subBatchNumber;
-    private transient LocalDate productionDate;
-    private transient LocalDate expiryDate;
+    private LocalDate productionDate;
+    private LocalDate expiryDate;
     private String additionalInfo;
     private String digitalSignature;
 
