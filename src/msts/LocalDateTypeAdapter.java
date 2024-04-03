@@ -1,4 +1,4 @@
-package msts.menu;
+package msts;
 
 import com.google.gson.*;
 
