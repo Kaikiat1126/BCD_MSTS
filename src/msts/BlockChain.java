@@ -1,9 +1,11 @@
 package msts;
 
 import com.google.gson.GsonBuilder;
+import jdk.jshell.Snippet;
 
 import java.io.*;
 import java.util.LinkedList;
+import java.util.List;
 
 public class BlockChain implements Serializable {
     private static LinkedList<Block> chain;
@@ -88,5 +90,22 @@ public class BlockChain implements Serializable {
     public void distribute(){
         String blockchain = new GsonBuilder().setPrettyPrinting().create().toJson(chain);
         System.out.println(blockchain);
+    }
+
+    public Block getBlock(Transaction transaction) {
+        // Find out the block that contains the transaction and return the block
+        for (Block block : chain) {
+            if (block != null) {
+                List<Transaction> transactions = block.getTransactions();
+                if (transactions != null) {
+                    for (Transaction t : transactions) {
+                        if (t != null && t.getTransactionId().equals(transaction.getTransactionId())) {
+                            return block;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

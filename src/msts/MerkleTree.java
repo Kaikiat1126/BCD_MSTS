@@ -58,30 +58,17 @@ public class MerkleTree {
     }
 
     //generate merkle proof, check if the transaction is in the block
-    public Pair<Boolean, List<String>> generateProof(String txid) {
+    public Boolean generateProof(String merkleRoot) {
+        //get a block, rebuild the merkle tree, and check if the transaction is in the block with the merkle root
         List<String> tempLst = new ArrayList<>();
         for (Transaction transaction : this.transactionList) {
             tempLst.add(transaction.toString());
         }
 
         List<String> hashes = genTransactionHashLst(tempLst);
-        List<String> proof = new ArrayList<>();
-
-        while (hashes.size() != 1) {
-            if (hashes.contains(txid)) {
-                proof.add(txid);
-            }
-
-            // Generate new level of hashes
+        while(  hashes.size() != 1 ) {
             hashes = genTransactionHashLst(hashes);
         }
-
-        // Final check for the last hash
-        if (hashes.size() == 1 && txid.equals(hashes.get(0))) {
-            proof.add(hashes.get(0));
-            return new Pair<>(true, proof);
-        }
-
-        return new Pair<>(false, proof);
+        return hashes.get(0).equals(merkleRoot);
     }
 }

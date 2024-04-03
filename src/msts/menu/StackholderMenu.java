@@ -1,5 +1,6 @@
 package msts.menu;
 
+import msts.MerkleTree;
 import msts.StatusContainer;
 import msts.Transaction;
 import msts.obj.User;
@@ -49,19 +50,18 @@ public abstract class StackholderMenu {
         }
         System.out.println("\nView Medicine Transaction");
         System.out.println("--------------------------");
-        System.out.printf("%-4s %-50s %-12s %-8s %-20s %-10s\n", "No.", "TxId", "Medicine ID", "Quantity", "Transaction Date", "Signature");
+        System.out.printf("%-4s %-50s %-12s %-8s %-20s %-10s\n", "No.", "TxId", "Medicine ID", "Quantity", "Transaction Date", "Verify Status");
         System.out.println("--------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < transactions.size(); i++) {
             try {
                 Transaction transaction = transactions.get(i);
-                User sender = User.getUserById(transaction.getSender());
-                boolean isTransactionSignatureValid = transaction.verifySignature(sender.getPublicKey());
+                boolean isTransactionValid = transaction.verifyTransaction();
                 System.out.printf("%-4d %-50s %-12s %-8s %-20s %-10s\n",
                         i + 1, transaction.getTransactionId(),
                         transaction.getMedicineId(),
                         transaction.getQuantity(),
                         transaction.getTransactionDate(),
-                        isTransactionSignatureValid ? "Valid" : "Invalid");
+                        isTransactionValid ? "Valid" : "Invalid");
             } catch (Exception e) {
                 e.printStackTrace();
             }

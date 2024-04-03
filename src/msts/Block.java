@@ -55,4 +55,6 @@ public class Block implements Serializable {
     public Header getHeader() {
         return header;
     }
+
+    public String getMerkleRoot() {return merkleRoot;}
 }

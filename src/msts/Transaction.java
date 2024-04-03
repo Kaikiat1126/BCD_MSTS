@@ -1,11 +1,14 @@
 package msts;
 
+import org.javatuples.Pair;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.List;
 
 public class Transaction implements Serializable {
 
@@ -160,5 +163,15 @@ public class Transaction implements Serializable {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean verifyTransaction() {
+        Block block = StatusContainer.blockChain.getBlock(this);
+        if (block == null) {
+            return false;
+        }
+        MerkleTree merkleTree = MerkleTree.getInstance(block.getTransactions());
+        Boolean proof = merkleTree.generateProof(block.getMerkleRoot());
+        return proof;
     }
 }

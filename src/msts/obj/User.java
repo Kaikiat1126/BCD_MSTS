@@ -170,35 +170,18 @@ public class User {
             ResultSet rs = JDBCManager.executeQuery(query);
 
             if (rs.next()) {
-                return extractUserFromResultSet(rs);
+                return new User(
+                        rs.getString("user_id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getInt("role"),
+                        rs.getString("email"),
+                        rs.getLong("contact_number")
+                );
             }
             return null;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static User getUserById(String userId){
-        try {
-            String query = "SELECT * FROM users WHERE user_id = '" + userId + "';";
-            ResultSet rs = JDBCManager.executeQuery(query);
-            if (rs.next()) {
-                return extractUserFromResultSet(rs);
-            }
-            return null;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static User extractUserFromResultSet(ResultSet rs) throws SQLException {
-        return new User(
-                rs.getString("user_id"),
-                rs.getString("username"),
-                rs.getString("password"),
-                rs.getInt("role"),
-                rs.getString("email"),
-                rs.getLong("contact_number")
-        );
     }
 }
