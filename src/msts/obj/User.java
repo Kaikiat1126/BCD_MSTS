@@ -97,7 +97,7 @@ public class User {
 
     public void createNewTransaction(Transaction transaction, boolean useSubBatch, boolean needUpdate, String updateQuery) {
         try {
-            transaction.signTransaction(KeyAccess.getPrivateKey(transaction.getSender()));
+            transaction.signTransaction(getPrivateKey());
 
             String txQuery = "INSERT INTO transactions (" +
                     "transaction_date, sender, receiver, medicine_id, quantity, batch_number, sub_batch_number, production_date, expiry_date, additional_info, digital_signature" +
